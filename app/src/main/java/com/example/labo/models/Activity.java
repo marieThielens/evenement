@@ -2,23 +2,26 @@ package com.example.labo.models;
 
 public class Activity {
 
-    private int id;
+    private long id;
     private String titreTache;
     private String dateCreation;
     private boolean estFini;
 
-    public Activity(int id, String titreTache, String dateCreation, boolean estFini) {
-        this.id = id;
+    public Activity( String titreTache, String dateCreation) {
+        this.id = 0;
         this.titreTache = titreTache;
         this.dateCreation = dateCreation;
-        this.estFini = estFini;
+    }
+    public Activity(long id, String titreTache, String dateCreation) {
+        this(titreTache,dateCreation);
+        this.id = id;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -36,14 +39,6 @@ public class Activity {
 
     public void setDateCreation(String dateCreation) {
         this.dateCreation = dateCreation;
-    }
-
-    public boolean isEstFini() {
-        return estFini;
-    }
-
-    public void setEstFini(boolean estFini) {
-        this.estFini = estFini;
     }
 
     @Override

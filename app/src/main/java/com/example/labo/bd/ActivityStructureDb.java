@@ -25,14 +25,9 @@ public class ActivityStructureDb {
 
 
     // Méthode de connexion
-    public ActivityStructureDb  openWritable() {
+    public ActivityStructureDb  ouvrirLecture() {
         dbHelper = new DbHelper(context); // on crée le helper
         db = dbHelper.getWritableDatabase(); // on initialise la db en écriture
-        return this;
-    }
-    public ActivityStructureDb ouvrirLecture() {
-        dbHelper = new DbHelper(context);
-        db = dbHelper.getReadableDatabase();
         return this;
     }
 

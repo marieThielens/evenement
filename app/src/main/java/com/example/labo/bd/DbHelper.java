@@ -19,6 +19,8 @@ public class DbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // Le script pour créer la table
         db.execSQL(DbRequete.Activity.MES_REQUETES); // Dbrequete est le fichier ou il y a mes requetes sql
+        // Ajouter les données initiales
+        db.execSQL(DbRequete.Activity.AJOUTER_DATA_BASE);
     }
 
     @Override

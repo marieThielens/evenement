@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -23,10 +24,10 @@ import java.util.Locale;
 
     public class AjouterActivity extends AppCompatActivity {
 
-        private Button btnValiderTache;
-        private EditText inputNomTache, inputAjouterDate;
-        private ImageView btnCalendar;
-        private LocalDate dateLimite = null;
+        Button btnValiderTache;
+        EditText inputNomTache, inputAjouterDate;
+        ImageView btnCalendar;
+        LocalDate dateLimite = null;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -39,20 +40,43 @@ import java.util.Locale;
             inputAjouterDate = findViewById(R.id.editText_date_limite);
             btnCalendar = findViewById(R.id.btn_calendrier);
 
-            // le calendrier  ..............
-            // Désactivation de la saisie via le clavier
-            inputAjouterDate.setInputType(InputType.TYPE_NULL);
-
-            Calendar calendar = Calendar.getInstance();
-            int jour = calendar.get(Calendar.DAY_OF_MONTH);
-            int mois = calendar.get(Calendar.MONTH);
-            int annee = calendar.get(Calendar.YEAR);
 
             // Ajouter mes taches dans ma db
             btnValiderTache.setOnClickListener(v -> {
                 ajouterTodo();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 finish();
+            });
+            // Déactivation de la saisie via le clavier
+            inputAjouterDate.setInputType(InputType.TYPE_NULL);
+
+
+            // le calendrier  .....................................
+            Calendar calendar = Calendar.getInstance();
+            int jour = calendar.get(Calendar.DAY_OF_MONTH);
+            int mois = calendar.get(Calendar.MONTH);
+            int annee = calendar.get(Calendar.YEAR);
+
+            btnCalendar.setOnClickListener(v -> {
+                DatePickerDialog picker = new DatePickerDialog(AjouterActivity.this,
+                        new DatePickerDialog.OnDateSetListener() { // l'utilisateur à cliqué sur une date
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+
+                                // je récupère le contexte de l'pp > puis les ressources > la configuration > locale (langue utilisé) > la 1ere
+                                Locale locale = AjouterActivity.this.getResources().getConfiguration().getLocales().get(0) ;
+
+                                // mois + 1 pcq datePicker et le calendar vont de 0 à 11, le localdate de 1 jusqu à 12
+                                dateLimite = LocalDate.of(year, month + 1, dayOfMonth);
+                                // Foramter en string la date pour que l'année soit à la fin
+                                String date = dateLimite.format(DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale.FRENCH));
+                                inputAjouterDate.setText(date); // Rajouter la date dans mon input
+
+                            }
+                        },
+                        annee, mois, jour );
+
+                picker.show();
             });
         }
 
@@ -64,7 +88,7 @@ import java.util.Locale;
 
             // Sauver dans la db
             ActivityStructureDb activityDAO = new ActivityStructureDb(getApplicationContext());
-                activityDAO.openWritable();
+                activityDAO.ouvrirLecture();
                 activityDAO.inserer(activity);
                 activityDAO.close();
         }

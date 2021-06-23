@@ -19,6 +19,11 @@ public class DbRequete {
                         + Activity .COLUMN_TITRE + " TEXT, "
                         + Activity .COLUMN_DATE + " TEXT "
                         + ");";
+
+        public static final String AJOUTER_DATA_BASE =
+                "INSERT INTO" + TABLE_NAME + " (" + COLUMN_TITRE + ") VALUES (?) ;";
+        public static final String REQUEST_DROP =
+                "DROP TABLE IF EXISTS " + TABLE_NAME + ";" ;
         // insert
         public static final String INSERT = "INSERT INTO" + TABLE_NAME + " (" + COLUMN_TITRE + ") VALUES (?) ;";
         // delete

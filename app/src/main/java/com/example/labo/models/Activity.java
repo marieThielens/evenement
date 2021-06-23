@@ -1,18 +1,20 @@
 package com.example.labo.models;
 
+import java.time.LocalDate;
+
 public class Activity {
 
     private long id;
     private String titreTache;
-    private String dateCreation;
+    private LocalDate dateCreation;
     private boolean estFini;
 
-    public Activity( String titreTache, String dateCreation) {
+    public Activity( String titreTache, LocalDate dateCreation) {
         this.id = 0;
         this.titreTache = titreTache;
         this.dateCreation = dateCreation;
     }
-    public Activity(long id, String titreTache, String dateCreation) {
+    public Activity(long id, String titreTache, LocalDate dateCreation) {
         this(titreTache,dateCreation);
         this.id = id;
     }
@@ -33,11 +35,11 @@ public class Activity {
         this.titreTache = titreTache;
     }
 
-    public String getDateCreation() {
+    public LocalDate getDateCreation() {
         return dateCreation;
     }
 
-    public void setDateCreation(String dateCreation) {
+    public void setDateCreation(LocalDate dateCreation) {
         this.dateCreation = dateCreation;
     }
 

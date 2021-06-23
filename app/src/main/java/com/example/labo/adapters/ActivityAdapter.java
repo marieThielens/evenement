@@ -84,14 +84,16 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
     Activity activities = dataSet.get(position); // L'index de ma data , ligne 55
         // Mise à jour de la vue via le ViewHolder
         holder.getTvTitreItem().setText(activities.getTitreTache());
-        holder.getTvDateItem().setText(activities.getDateCreation());
+
 
         // Formatage de la date
-        //Locale locale = context.getResources().getConfiguration().getLocales().get(0);
-        //DateTimeFormatter formatter = DateTimeFormatter.ofPattern(context.getString(R.string.date_pattern), locale);
+        Locale locale = context.getResources().getConfiguration().getLocales().get(0);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MM YYYY", locale);
 
-        String dateMessage;
-        String dateFormatted;
+        String dateMessage = "Date : $s"; // La phrase qui affiche la date
+
+        // Mise à jour de la vue via le ViewHolder
+        holder.getTvDateItem().setText(String.format(dateMessage));
 
         // Ecoute de mon bouton "Fait"
         holder.getBtnFait().setOnClickListener(v -> {

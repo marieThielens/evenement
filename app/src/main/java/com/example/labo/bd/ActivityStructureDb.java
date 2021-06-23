@@ -1,5 +1,6 @@
 package com.example.labo.bd;
 
+import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -7,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.example.labo.models.Activity;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +26,6 @@ public class ActivityStructureDb {
         this.context = context;
     }
 
-
     // Méthode de connexion
     public ActivityStructureDb  ouvrirLecture() {
         dbHelper = new DbHelper(context); // on crée le helper
@@ -36,6 +38,18 @@ public class ActivityStructureDb {
         db.close();
         dbHelper.close();
     }
+
+
+    private ContentValues creerCv(Activity activity) {
+        // Formater ma LocalDate en string  car sinon pas lu par db
+        String date = activity.getDateCreation().format(DateTimeFormatter.ISO_DATE);
+
+        ContentValues cv = new ContentValues();
+        cv.put(DbRequete.Activity.COLUMN_TITRE, activity.getTitreTache()); // Tache = constructeur
+        cv.put(DbRequete.Activity.COLUMN_DATE, date); // Ma date formatée en ligne 44
+
+        return cv;
+    }
     // Centraliser nos interaction
     // curseurs : permet de parcourir les lignes de résultat d'une requete SELECT
     private Activity produireCurseur(Cursor c) {
@@ -43,15 +57,10 @@ public class ActivityStructureDb {
         String titre = c.getString(c.getColumnIndex(DbRequete.Activity.COLUMN_TITRE));
         String date = c.getString(c.getColumnIndex(DbRequete.Activity.COLUMN_DATE));
 
-        return new Activity(id, titre, date);
-    }
+        // formatage
+        LocalDate creationDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
 
-    private ContentValues creerCv(Activity activity) {
-        ContentValues cv = new ContentValues();
-        cv.put(DbRequete.Activity.COLUMN_TITRE, activity.getTitreTache()); // Tache = constructeur
-        cv.put(DbRequete.Activity.COLUMN_DATE, activity.getDateCreation());
-
-        return cv;
+        return new Activity(id, titre, creationDate);
     }
 
     // Créer
@@ -83,13 +92,22 @@ public class ActivityStructureDb {
         List<Activity> activities = new ArrayList<>();
         if(cursor.getCount() == 0) { return activities; }
 
-        cursor.moveToFirst();
+        cursor.moveToFirst(); // Lit la premiere ligne
         while(! cursor.isAfterLast()) {
             Activity t = produireCurseur(cursor);
             activities.add(t);
             cursor.moveToNext();
-
         }
+        cursor.close();
         return activities;
+    }
+
+    public boolean supprimer(long id) {
+        String idAsupprimer = DbRequete.Activity.COLUMN_ID + " = ?";
+        String[] ouArgument = new String[] {
+            String.valueOf(id)
+        };
+        int nbLigne = db.delete(DbRequete.Activity.TABLE_NAME, idAsupprimer, ouArgument);
+        return nbLigne == 1;
     }
 }

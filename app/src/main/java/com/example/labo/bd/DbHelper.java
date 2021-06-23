@@ -28,8 +28,5 @@ public class DbHelper extends SQLiteOpenHelper {
         // Si la version est vielle je delete ma base et je la recée ensuite
         db.execSQL((DbRequete.Activity.REQUEST_DELETE));
         onCreate(db);
-
-        // Si info sensible utiliser un alter Table à la place
-        // car cette solutioon implique la perte de données
     }
 }

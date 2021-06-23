@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.Button;
 
 import com.example.labo.adapters.ActivityAdapter;
 import com.example.labo.bd.ActivityStructureDb;
+import com.example.labo.bd.DbRequete;
 import com.example.labo.models.Activity;
 
 import java.time.LocalDate;
@@ -27,10 +29,12 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView monRecycler;
     Button btnAdd;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         // Liaison avec le Layout
         btnAdd = findViewById(R.id.btn_add);
@@ -57,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         // Récupération des data de la db
         ActivityStructureDb activityDAO = new ActivityStructureDb(getApplicationContext());
         activityDAO.ouvrirLecture();
+
         List<Activity> data = activityDAO.getAll();
 
         // Mise à jour de l'adapter de la RecyclerView

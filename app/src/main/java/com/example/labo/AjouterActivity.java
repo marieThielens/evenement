@@ -15,6 +15,7 @@ import android.widget.Spinner;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.labo.bd.ActivityStructureDb;
+import com.example.labo.bd.DbRequete;
 import com.example.labo.models.Activity;
 
 import java.time.LocalDate;
@@ -71,24 +72,25 @@ import java.util.Locale;
                                 // Foramter en string la date pour que l'année soit à la fin
                                 String date = dateLimite.format(DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale.FRENCH));
                                 inputAjouterDate.setText(date); // Rajouter la date dans mon input
-
                             }
                         },
                         annee, mois, jour );
-
                 picker.show();
             });
         }
 
         private void ajouterTodo() {
+
             String titreTache = inputNomTache.getText().toString();
-            String dateCreation = "LocalDate.now()";
+            LocalDate dateCreation = LocalDate.now();
             // de models. Créer une nouvelle tache
             Activity activity = new Activity( titreTache, dateCreation);
 
             // Sauver dans la db
             ActivityStructureDb activityDAO = new ActivityStructureDb(getApplicationContext());
-                activityDAO.ouvrirLecture();
+            //activityDAO.supprimer(0);
+
+            activityDAO.ouvrirLecture();
                 activityDAO.inserer(activity);
                 activityDAO.close();
         }

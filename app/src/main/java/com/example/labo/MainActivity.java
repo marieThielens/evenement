@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
         ActivityStructureDb activityDAO = new ActivityStructureDb(getApplicationContext());
         activityDAO.ouvrirLecture();
 
-        activityDAO.miseAjour(activity.getId(), activity);
+        activityDAO.supprimer(activity.getId());
         activityDAO.close();
 
         // Mise a jours de la RecyclerView

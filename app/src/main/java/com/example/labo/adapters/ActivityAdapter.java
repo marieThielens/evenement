@@ -90,13 +90,17 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
         Locale locale = context.getResources().getConfiguration().getLocales().get(0);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MM YYYY", locale);
 
-        String dateMessage = "Date : $s"; // La phrase qui affiche la date
+        String dateMessage = "Date : %s"; // La phrase qui affiche la date
+        String dateFormatted;
 
+        // Avoir la position
+        dateFormatted = activities.getDateCreation().format(formatter);
         // Mise à jour de la vue via le ViewHolder
-        holder.getTvDateItem().setText(String.format(dateMessage));
+        holder.getTvDateItem().setText(String.format(dateMessage, dateFormatted));
 
         // Ecoute de mon bouton "Fait"
         holder.getBtnFait().setOnClickListener(v -> {
+            // est null
             this.activiteFinie.onFinish(activities); // ligne 84
         });
     }

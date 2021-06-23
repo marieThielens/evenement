@@ -10,7 +10,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
+import android.widget.Toast;
 
 import com.example.labo.adapters.ActivityAdapter;
 import com.example.labo.bd.ActivityStructureDb;
@@ -21,25 +26,39 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+// implements pour mon spinner (comme input select )
+public class MainActivity extends AppCompatActivity  implements AdapterView.OnItemSelectedListener {
+    String[] periode = {"jour", "semaine", "mois"};
 
     private List<Activity> activities = new ArrayList<>();
     private ActivityAdapter activityAdapter;
 
     RecyclerView monRecycler;
     Button btnAdd;
-
+    Spinner choixPeriode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        // Liaison avec le Layout
+        // Liaison avec le Layout............................
         btnAdd = findViewById(R.id.btn_add);
         monRecycler = findViewById(R.id.rv_activity);
+        choixPeriode = findViewById(R.id.choix_periode);
 
+        // Spinner ...........................................
+        // Ecouter mon Spinner (input select )
+        choixPeriode.setOnItemSelectedListener(this);
+
+        // Un tableau qui va recevoir mes périodes
+        ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, periode);
+        // Envoi d'un layout android pour chaque item
+        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Lui donner l'adapteur
+        choixPeriode.setAdapter(aa);
+
+        // Ecouter mon bouton + ......................
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,6 +68,14 @@ public class MainActivity extends AppCompatActivity {
 
         // Adapter
         activityAdapter = new ActivityAdapter(this, activities);
+
+        // Event en liste pour mon boutton delete
+        activityAdapter.EnvoyerActiviteFinie(new ActivityAdapter.ActiviteFinie() {
+            @Override
+            public void onFinish(Activity activities) {
+                finirTache(activities);
+            }
+        });
 
         // RecyclerView .....................................
         // Creation du type de layout que le RecyclerView utilise (Linear/Grid/StraggeredGrid)
@@ -74,5 +101,27 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    // Supprimer une activité.................................
+    private void finirTache(Activity activity) {
+        // Sauvegarde dans la DB
+        ActivityStructureDb activityDAO = new ActivityStructureDb(getApplicationContext());
+        activityDAO.ouvrirLecture();
 
+        activityDAO.miseAjour(activity.getId(), activity);
+        activityDAO.close();
+
+        // Mise a jours de la RecyclerView
+        activityAdapter.notifyDataSetChanged();
+}
+
+    // Spinner .......................
+    @Override
+    public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
+        Toast.makeText(getApplicationContext(),periode[position] , Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }

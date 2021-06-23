@@ -102,6 +102,17 @@ public class ActivityStructureDb {
         return activities;
     }
 
+    public boolean miseAjour(long id, Activity activity) {
+        ContentValues cv = creerCv(activity); // = générer curseur
+
+        String whereClause = DbRequete.Activity.COLUMN_ID + " = ?";
+        String[] ouArgument = new String[] {
+                String.valueOf(id)
+        };
+        int nbLigne = db.update(DbRequete.Activity.TABLE_NAME, cv,whereClause, ouArgument);
+        return nbLigne == 1;
+    }
+
     public boolean supprimer(long id) {
         String idAsupprimer = DbRequete.Activity.COLUMN_ID + " = ?";
         String[] ouArgument = new String[] {

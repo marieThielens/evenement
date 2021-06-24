@@ -82,7 +82,9 @@ import java.util.Locale;
         private void ajouterTodo() {
 
             String titreTache = inputNomTache.getText().toString();
-            LocalDate dateCreation = LocalDate.now();
+             LocalDate dateCreation = LocalDate.now();
+
+
             // de models. Créer une nouvelle tache
             Activity activity = new Activity( titreTache, dateCreation);
 
@@ -92,6 +94,6 @@ import java.util.Locale;
 
             activityDAO.ouvrirLecture();
                 activityDAO.inserer(activity);
-                activityDAO.close();
+                //activityDAO.close();
         }
 }

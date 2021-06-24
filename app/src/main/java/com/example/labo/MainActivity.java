@@ -2,6 +2,8 @@ package com.example.labo;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -51,7 +53,7 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
         // Ecouter mon Spinner (input select )
         choixPeriode.setOnItemSelectedListener(this);
 
-        // Un tableau qui va recevoir mes périodes
+        // Un tableau qui va recevoir mes périodes ( spinner)
         ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, periode);
         // Envoi d'un layout android pour chaque item
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -66,7 +68,15 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
             }
         });
 
-        // Adapter
+        // Fragment Meteo ..............................
+//        FragmentManager fm = getSupportFragmentManager();
+ //       findViewById(R.id.container_fragment);
+//        FragmentTransaction transaction = fm.beginTransaction();
+ //       transaction.add(R.id.monLayoutFragment, MeteoFragment.getInstance());
+//        transaction.commit();
+
+
+        // Adapter............................................;;
         activityAdapter = new ActivityAdapter(this, activities);
 
         // Event en liste pour mon boutton delete

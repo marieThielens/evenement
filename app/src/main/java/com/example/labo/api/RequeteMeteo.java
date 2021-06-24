@@ -12,12 +12,14 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+// Tache asynchrone avec <String, retoune rien, models>
 public class RequeteMeteo extends AsyncTask<String, Void, MeteoData> {
     //region Event
     public interface WeatherListener {
         void onData(MeteoData data);
     }
 
+    //  listener est une référence vers un objet dont on ignore le type exact
     private WeatherListener listener;
 
     public void setWeatherListener(WeatherListener listener) {

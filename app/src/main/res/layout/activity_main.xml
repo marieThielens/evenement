@@ -6,11 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:orientation="vertical">
-    <FrameLayout
+    <fragment
         android:id="@+id/container_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        android:name="com.example.labo.MeteoFragment"
         />
     <TextView
         android:layout_width="match_parent"

@@ -29,6 +29,7 @@ import java.util.Locale;
         EditText inputNomTache, inputAjouterDate;
         ImageView btnCalendar;
         LocalDate dateLimite = null;
+        LocalDate dateEvent;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +73,7 @@ import java.util.Locale;
                                 // Foramter en string la date pour que l'année soit à la fin
                                 String date = dateLimite.format(DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale.FRENCH));
                                 inputAjouterDate.setText(date); // Rajouter la date dans mon input
+                                dateEvent = dateLimite; // La date de l'evenement = la date du picker
                             }
                         },
                         annee, mois, jour );
@@ -82,15 +84,13 @@ import java.util.Locale;
         private void ajouterTodo() {
 
             String titreTache = inputNomTache.getText().toString();
-             LocalDate dateCreation = LocalDate.now();
+            LocalDate dateCreation = dateLimite; // Je récupère la date du picker
 
-
-            // de models. Créer une nouvelle tache
+            // de models ( constructeur ) . Créer une nouvelle tache
             Activity activity = new Activity( titreTache, dateCreation);
 
             // Sauver dans la db
             ActivityStructureDb activityDAO = new ActivityStructureDb(getApplicationContext());
-            //activityDAO.supprimer(0);
 
             activityDAO.ouvrirLecture();
                 activityDAO.inserer(activity);

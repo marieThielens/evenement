@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -88,8 +89,9 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
         });
 
         // RecyclerView .....................................
-        // Creation du type de layout que le RecyclerView utilise (Linear/Grid/StraggeredGrid)
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        // Creation du type de layout que le RecyclerView utilise (Linear/Grid/StraggeredGrid) / Je mets en horizontal
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getBaseContext(), LinearLayoutManager.HORIZONTAL, false);
         // va permettre de définir le type de layout de mon recycler
         monRecycler.setLayoutManager(layoutManager);
         monRecycler.setHasFixedSize(false); // Si des éléments sont rajouté ou enlevé, la modification du contenu de l'adapteur ne modifie ni sa hauteur ni sa largeur

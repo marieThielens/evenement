@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -50,6 +51,9 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
     RecyclerView monRecycler;
     Button btnAdd;
     Spinner choixPeriode;
+
+    private static final int ID_ITEM1 = 1;
+    private static final int ID_ITEM2 = 2;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -158,12 +162,26 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
 
     }
     @Override
-    // Ajout d'un menu ( les 3 points )
     public boolean onCreateOptionsMenu(Menu menu) {
-        // groupId, id de l'item, je ne gère pas l'ordre, titre
-        menu.add(0,1,0, "Menu 1");
-        menu.add(0,2,0, "Menu 2");
+        // groupId, id de l'item, je ne gère pas l'ordre, titre .
+        // rajouter l'image à mon menu (choisir l'icone dans drawable) .
+        // .setShowAsAction() : i ndiquer que notre icone apparrait sur notre barre
+        menu.add(0,ID_ITEM1,0, "Menu 1").setIcon(R.drawable.horloge).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        // Il est impossible de mettre une image dans le menu déroulant
+        menu.add(0,ID_ITEM2,0, "Menu 2");
         return super.onCreateOptionsMenu(menu);
+    }
+    @Override
+    // Un callback sur mon menu
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // savoir sur quel item on a pressé
+        if(item.getItemId() == 1) {
+            Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
+        }
+        return  super.onOptionsItemSelected(item);
     }
 
 }

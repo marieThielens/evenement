@@ -59,6 +59,7 @@ public class MeteoFragment extends Fragment {
 
         soleil.startAnimation(animation);
 
+        // Liaison ...............................
         tvMeteo = v.findViewById(R.id.tv_meteo);
         choixVille = v.findViewById(R.id.tv_choix_ville);
         btnChoixVille = v.findViewById(R.id.btn_choix_ville);
@@ -66,24 +67,24 @@ public class MeteoFragment extends Fragment {
         choixVille.getText().toString().trim(); // Récupérer le texte de mon input
 
         btnChoixVille.setOnClickListener(v1 -> {
-
-            choisirVille();
+            // mon input ville
+            String ville = choixVille.getText().toString().trim();
+            choisirVille(ville); // Je lui passe la ville
         });
          obtenirMeteoData(); // Fonction pour ma météo
         return v;
     }
 
-    private void choisirVille() {
+    private void choisirVille(String ville) {
         RequeteMeteo requeteMeteoApi = new RequeteMeteo(); // L'appel de l'api
 
         requeteMeteoApi.setWeatherListener(data -> { // Ecouter ma requete, les datas =
-            choixVille.getText().toString().trim();
-            // Le texte montrer la ville + la température
 
-            tvMeteo.setText(choixVille + " " + data.getTemp() + "°c");
+            // Le texte montrer la ville + la température
+            tvMeteo.setText(data.getCity() + " " + data.getTemp() + "°c");
         });
         // AsynctTask : permet d'effectuer des taches de fond ( courte durée )
-        requeteMeteoApi.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,  "${choixVille}" );
+        requeteMeteoApi.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,  ville );
     }
 
     // Meteo .......................................

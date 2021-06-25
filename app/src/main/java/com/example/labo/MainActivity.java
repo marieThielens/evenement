@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,6 +32,8 @@ import java.util.List;
 
 // implements pour mon spinner (comme input select )
 public class MainActivity extends AppCompatActivity  implements AdapterView.OnItemSelectedListener {
+
+
     String[] periode = {"jour", "semaine", "mois"};
 
     private List<Activity> activities = new ArrayList<>();

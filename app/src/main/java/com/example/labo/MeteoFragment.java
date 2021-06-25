@@ -1,16 +1,25 @@
 package com.example.labo;
 
+import android.animation.ObjectAnimator;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.labo.api.RequeteMeteo;
@@ -23,36 +32,32 @@ public class MeteoFragment extends Fragment {
     TextView tvMeteo;
     EditText choixVille;
     Button btnChoixVille;
+    ImageView soleil;
 
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String PARAM_METEO = "DateMeteo";
 
     public MeteoFragment() {
         // Required empty public constructor
     }
-    public static MeteoFragment newInstance(LocalDate dateMeteo) {
-        MeteoFragment fragment = new MeteoFragment();
-        Bundle args = new Bundle();
-        args.putString(PARAM_METEO, dateMeteo.toString());
-        fragment.setArguments(args);
-        return fragment;
-    }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            DateMeteo = LocalDate.parse(getArguments().getString(PARAM_METEO));
 
-        }
-    }
 
     @Override
     // est appelé lorque la vue  associée au fragment est crée
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 
+
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_meteo, container, false);
+
+        // Animer le soleil ........................
+        soleil = v.findViewById(R.id.img_soleil);
+
+        RotateAnimation animation = new RotateAnimation(0.0f, 360.0f,Animation.RELATIVE_TO_SELF,0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        animation.setInterpolator(new LinearInterpolator());
+        animation.setRepeatCount(Animation.INFINITE);
+        animation.setDuration(700);
+
+        soleil.startAnimation(animation);
 
         tvMeteo = v.findViewById(R.id.tv_meteo);
         choixVille = v.findViewById(R.id.tv_choix_ville);

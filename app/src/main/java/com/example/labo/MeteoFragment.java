@@ -75,6 +75,7 @@ public class MeteoFragment extends Fragment {
         return v;
     }
 
+    // Meteo .......................................
     private void choisirVille(String ville) {
         RequeteMeteo requeteMeteoApi = new RequeteMeteo(); // L'appel de l'api
 
@@ -87,7 +88,6 @@ public class MeteoFragment extends Fragment {
         requeteMeteoApi.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,  ville );
     }
 
-    // Meteo .......................................
     private void obtenirMeteoData() {
         RequeteMeteo requeteMeteoApi = new RequeteMeteo(); // L'appel de l'api
         requeteMeteoApi.setWeatherListener(data -> { // Ecouter ma requete, les datas =

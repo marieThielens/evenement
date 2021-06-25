@@ -2,6 +2,8 @@ package com.example.labo;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GestureDetectorCompat;
+import androidx.core.view.MotionEventCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -13,6 +15,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.GestureDetector;
+import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -39,14 +45,18 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
     private List<Activity> activities = new ArrayList<>();
     private ActivityAdapter activityAdapter;
 
+    private GestureDetectorCompat mDetector;
+
     RecyclerView monRecycler;
     Button btnAdd;
     Spinner choixPeriode;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mDetector = new GestureDetectorCompat(this, new ecouterMouvement());
 
         // Liaison avec le Layout............................
         btnAdd = findViewById(R.id.btn_add);
@@ -71,14 +81,6 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
                 ouvrirActivity();
             }
         });
-
-        // Fragment Meteo ..............................
-//        FragmentManager fm = getSupportFragmentManager();
- //       findViewById(R.id.container_fragment);
-//        FragmentTransaction transaction = fm.beginTransaction();
- //       transaction.add(R.id.monLayoutFragment, MeteoFragment.getInstance());
-//        transaction.commit();
-
 
         // Adapter............................................;;
         activityAdapter = new ActivityAdapter(this, activities);
@@ -110,7 +112,10 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
         activities.clear();
         activities.addAll(data); // Rajouter les données
         activityAdapter.notifyDataSetChanged(); // prevenir l'adapteur que ça a changé
-    }
+    } // fin OnCreate
+
+
+
     private void ouvrirActivity() {
         Intent intent = new Intent(getApplicationContext(), AjouterActivity.class);
         startActivity(intent);
@@ -128,6 +133,19 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
         // Mise a jours de la RecyclerView
         activityAdapter.notifyDataSetChanged();
 }
+    // Observer le mouvement des doigts .........................
+
+    public boolean onTouchEvent(View v, MotionEvent event) {
+        this.mDetector.onTouchEvent(event);
+        return super.onTouchEvent(event);
+    }
+    class ecouterMouvement extends GestureDetector.SimpleOnGestureListener {
+        @Override
+        public boolean onFling(MotionEvent event1, MotionEvent event2, float velocityX, float velocityY){
+            Log.d("ERROR", "onFling: " + event1.toString() + event2.toString());
+            return true;
+        }
+    }
 
     // Spinner .......................
     @Override
@@ -139,4 +157,13 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+    @Override
+    // Ajout d'un menu ( les 3 points )
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // groupId, id de l'item, je ne gère pas l'ordre, titre
+        menu.add(0,1,0, "Menu 1");
+        menu.add(0,2,0, "Menu 2");
+        return super.onCreateOptionsMenu(menu);
+    }
+
 }

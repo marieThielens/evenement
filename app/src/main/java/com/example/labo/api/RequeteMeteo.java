@@ -83,7 +83,6 @@ public class RequeteMeteo extends AsyncTask<String, Void, MeteoData> {
         if(resquestResult != null){
             try {
                 JSONObject json = new JSONObject(resquestResult);
-
                 String city = json.getString("name");
 
                 JSONObject main = json.getJSONObject("main");
